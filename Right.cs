@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace project
@@ -7,8 +7,7 @@ namespace project
     {
         public Right(List<FileItem> files, int startX, int startY)
         {
-            int leftMaxLines = 30;
-            int maxLines = leftMaxLines / 3;
+            int maxLines = 10; // Меньше строк для детального отображения
             int nameWidth = 12;
             int sizeWidth = 10;
             int dateWidth = 10;
@@ -38,32 +37,47 @@ namespace project
             string bPart = new string(' ', 5);
 
             Console.Write("\u2551");
-
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("C:| Имя");
             Console.ForegroundColor = ConsoleColor.Cyan;
-
             Console.Write(bPart + "\u2502");
-
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("  Размер ");
             Console.ForegroundColor = ConsoleColor.Cyan;
-
             Console.Write("\u2502");
-
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("   Дата  ");
             Console.ForegroundColor = ConsoleColor.Cyan;
-
             Console.Write(" \u2502");
-
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("Время ");
             Console.ForegroundColor = ConsoleColor.Cyan;
-
             Console.Write("\u2551");
 
-            // Вывод файлов
+            // ПЕРВАЯ СТРОКА - ТОЧКИ ".." С ВЫДЕЛЕНИЕМ
+            Console.SetCursorPosition(x, y);
+            Console.Write("\u2551");
+
+            // ВКЛЮЧАЕМ ВЫДЕЛЕНИЕ (инверсные цвета)
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
+
+            Console.Write("..".PadRight(nameWidth));
+            Console.Write("\u2502");
+            Console.Write("КАТАЛОГ".PadLeft(sizeWidth - 1));
+            Console.Write("\u2502");
+            Console.Write("11.10.02".PadRight(dateWidth));
+            Console.Write("\u2502");
+            Console.Write("19:40".PadLeft(timeWidth));
+
+            // ВЫКЛЮЧАЕМ ВЫДЕЛЕНИЕ
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
+            Console.ForegroundColor = ConsoleColor.Cyan;
+
+            Console.Write("\u2551");
+            y++;
+
+            // Вывод файлов (обычные цвета)
             for (int i = 0; i < Math.Min(files.Count, maxLines); i++)
             {
                 string name = files[i].Name.Length > nameWidth ? files[i].Name.Substring(0, nameWidth - 2) + "~" : files[i].Name;
@@ -88,6 +102,8 @@ namespace project
 
                 y++;
             }
+
+            // Нижняя часть
             Console.SetCursorPosition(40, 13);
             string longPartD = new string('\u2500', 12);
             string dataPartD = new string('\u2500', 9);
